@@ -132,3 +132,107 @@
       {
         question: "Onde Pierre de Maricourt serviu em 1269?",
         options: ["Cerco de Lucera", "Batalha de Orleans", "Cerco de Paris", "Guerra de Milão"],
+        answer: 0
+      },
+      {
+        question: "Qual o nome da obra escrita por Pierre de Maricourt?",
+        options: ["De Magnete", "Epistola de Magnete", "Magnetis Natura", "Tractatus de Ferro"],
+        answer: 1
+      },
+      {
+        question: "Quem foi inspirado pelos estudos de Maricourt?",
+        options: ["Galileu Galilei", "Isaac Newton", "William Gilbert", "René Descartes"],
+        answer: 2
+      },
+      {
+        question: "O que Pierre observou sobre os ímãs?",
+        options: ["Possuíam um único polo", "Eram feitos de ferro puro", "Tinham dois polos distintos", "Eram imantados pelo sol"],
+        answer: 2
+      },
+      {
+        question: "Em que campo os estudos de Maricourt ajudaram diretamente?",
+        options: ["Astronomia", "Navegação", "Arquitetura", "Agricultura"],
+        answer: 1
+      },
+      {
+        question: "Pierre acreditava que os ímãs se orientavam por qual força?",
+        options: ["Gravidade terrestre", "Força celeste", "Vento solar", "Campos elétricos"],
+        answer: 1
+      },
+      {
+        question: "Qual é o principal legado de Pierre de Maricourt?",
+        options: ["Criação do telescópio", "Descoberta da eletricidade", "Início do método experimental", "Invenção da bússola"],
+        answer: 2
+      },
+      {
+        question: "O que torna a Epistola de Magnete especial?",
+        options: ["Primeira obra sobre magnetismo experimental", "Primeiro livro sobre química", "Manual de guerra medieval", "Guia de astronomia prática"],
+        answer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    startBtn.addEventListener("click", startQuiz);
+    restartBtn.addEventListener("click", restartQuiz);
+
+    function startQuiz() {
+      startScreen.style.display = "none";
+      quizScreen.style.display = "block";
+      currentQuestion = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = quiz[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.classList.add("option");
+        btn.addEventListener("click", () => checkAnswer(index, btn));
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selectedIndex, button) {
+      const correctIndex = quiz[currentQuestion].answer;
+      const buttons = document.querySelectorAll(".option");
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      if (selectedIndex === correctIndex) {
+        button.classList.add("correct");
+        score++;
+      } else {
+        button.classList.add("incorrect");
+        buttons[correctIndex].classList.add("correct");
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < quiz.length) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function showResult() {
+      quizScreen.style.display = "none";
+      resultScreen.style.display = "block";
+      scoreEl.textContent = `Você acertou ${score} de ${quiz.length} perguntas!`;
+    }
+
+    function restartQuiz() {
+      resultScreen.style.display = "none";
+      startScreen.style.display = "block";
+    }
+  </script>
+</body>
+</html>
