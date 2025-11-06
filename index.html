@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz: Pierre de Maricourt e o Magnetismo</title>
+  <style>
+    :root {
+      --almond: #ede0d4ff;
+      --dun: #e6ccb2ff;
+      --tan: #ddb892ff;
+      --chamoisee: #b08968ff;
+      --coffee: #7f5539ff;
+      --raw-umber: #9c6644ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--almond);
+      color: var(--coffee);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      background-color: var(--dun);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 700px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: var(--raw-umber);
+      font-size: 1.8rem;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button.option {
+      background-color: var(--tan);
+      border: 2px solid var(--chamoisee);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button.option:hover {
+      background-color: var(--chamoisee);
+      color: white;
+    }
+
+    #next-btn {
+      background-color: var(--coffee);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    #next-btn:hover {
+      background-color: var(--raw-umber);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--coffee);
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: var(--chamoisee);
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz: Pierre de Maricourt e o Magnetismo</h1>
+    <div id="quiz">
+      <div id="question-container">
+        <div id="question" class="question"></div>
+        <div id="options" class="options"></div>
+      </div>
+      <button id="next-btn" class="hidden">Próxima</button>
+    </div>
+    <div id="result" class="result hidden"></div>
+    <footer>Feira Científica | Ensino Médio & Fundamental II</footer>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "1. Em que período histórico viveu Pierre de Maricourt?",
+        options: ["Renascimento", "Idade Média", "Revolução Científica", "Antiguidade"],
+        answer: 1,
+      },
+      {
+        question: "2. Qual era a principal influência sobre a ciência no século XIII?",
+        options: [
+          "A experimentação prática e o método empírico",
+          "A religião e a filosofia aristotélica",
+          "A matemática grega e a lógica moderna",
+          "A teoria heliocêntrica",
+        ],
+        answer: 1,
+      },
+      {
+        question: "3. Por que Pierre de Maricourt recebeu o apelido de 'Peregrinus'?",
+        options: [
+          "Porque era um estudioso de pássaros migratórios",
+          "Porque viajava muito e tinha experiências militares",
+          "Porque nasceu perto de uma peregrinação famosa",
+          "Porque era membro de uma ordem religiosa",
+        ],
+        answer: 1,
+      },
+      {
+        question: "4. Em qual evento histórico Pierre participou como engenheiro militar?",
+        options: [
+          "As Cruzadas do Oriente Médio",
+          "O cerco de Lucera, no sul da Itália",
+          "A construção da Muralha da França",
+          "A Guerra dos Cem Anos",
+        ],
+        answer: 1,
+      },
+      {
+        question: "5. Qual é o nome da principal obra de Pierre de Maricourt?",
+        options: [
+          "De Magnete",
+          "Epistola de Magnete",
+          "Tractatus de Scientia Nova",
+          "Liber Magnetis",
+        ],
+        answer: 1,
+      },
+      {
+        question: "6. A Epistola de Magnete foi escrita em forma de:",
+        options: ["Diário pessoal", "Carta para outro estudioso", "Poema filosófico", "Manual militar"],
+        answer: 1,
+      },
+      {
+        question: "7. O que Pierre de Maricourt descobriu sobre os ímãs?",
+        options: [
+          "Que eles podiam curar doenças",
+          "Que possuem dois polos com forças distintas",
+          "Que perdem a força magnética em água salgada",
+          "Que atraem apenas metais preciosos",
+        ],
+        answer: 1,
+      },
+      {
+        question: "8. Qual era o erro na visão de mundo de Peregrinus sobre o magnetismo?",
+        options: [
+          "Acreditava que o magnetismo era causado por magia",
+          "Pensava que o campo magnético vinha de forças celestes",
+          "Negava a existência dos polos magnéticos",
+          "Dizia que a Terra era o centro do magnetismo",
+        ],
+        answer: 1,
+      },
+      {
+        question: "9. Qual cientista foi diretamente influenciado pela obra de Pierre de Maricourt?",
+        options: ["Isaac Newton", "Galileu Galilei", "William Gilbert", "Nicolau Copérnico"],
+        answer: 2,
+      },
+      {
+        question: "10. Qual foi a principal contribuição de Pierre de Maricourt para a ciência?",
+        options: [
+          "Criar o primeiro telescópio",
+          "Desenvolver o cálculo diferencial",
+          "Unir observação e raciocínio lógico, antecipando o método científico",
+          "Fundar uma escola de navegação",
+        ],
+        answer: 2,
+      },
+    ];
+
+    const questionElement = document.getElementById("question");
+    const optionsContainer = document.getElementById("options");
+    const nextButton = document.getElementById("next-btn");
+    const resultContainer = document.getElementById("result");
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = q.question;
+      optionsContainer.innerHTML = "";
+      q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.classList.add("option");
+        button.addEventListener("click", () => selectOption(index));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectOption(selectedIndex) {
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll(".option");
+
+      buttons.forEach((btn, index) => {
+        btn.disabled = true;
+        if (index === q.answer) btn.style.backgroundColor = "var(--chamoisee)";
+        if (index === selectedIndex && index !== q.answer)
+          btn.style.backgroundColor = "#d9534f";
+      });
+
+      if (selectedIndex === q.answer) score++;
+      nextButton.classList.remove("hidden");
+    }
+
+    nextButton.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+        nextButton.classList.add("hidden");
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      document.getElementById("quiz").classList.add("hidden");
+      resultContainer.classList.remove("hidden");
+      resultContainer.textContent = `Você acertou ${score} de ${questions.length} perguntas!`;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
