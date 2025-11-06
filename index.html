@@ -59,14 +59,18 @@
       gap: 10px;
     }
 
+    button {
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px 20px;
+      transition: all 0.2s ease-in-out;
+    }
+
     button.option {
       background-color: var(--tan);
       border: 2px solid var(--chamoisee);
-      border-radius: 8px;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.2s ease-in-out;
     }
 
     button.option:hover {
@@ -74,19 +78,13 @@
       color: white;
     }
 
-    #next-btn {
+    #next-btn, #start-btn, #retry-btn {
       background-color: var(--coffee);
       color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      cursor: pointer;
       margin-top: 20px;
-      transition: background-color 0.3s ease;
     }
 
-    #next-btn:hover {
+    #next-btn:hover, #start-btn:hover, #retry-btn:hover {
       background-color: var(--raw-umber);
     }
 
@@ -106,19 +104,39 @@
       font-size: 0.9rem;
       color: var(--chamoisee);
     }
+
+    .intro {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="quiz-container">
     <h1>Quiz: Pierre de Maricourt e o Magnetismo</h1>
-    <div id="quiz">
+
+    <!-- Tela inicial -->
+    <div id="start-screen">
+      <p class="intro">
+        Descubra o quanto você sabe sobre Pierre de Maricourt, o pioneiro do estudo do magnetismo!  
+        Clique abaixo para começar o quiz.
+      </p>
+      <button id="start-btn">Começar o Quiz</button>
+    </div>
+
+    <!-- Quiz -->
+    <div id="quiz" class="hidden">
       <div id="question-container">
         <div id="question" class="question"></div>
         <div id="options" class="options"></div>
       </div>
       <button id="next-btn" class="hidden">Próxima</button>
     </div>
+
+    <!-- Resultado -->
     <div id="result" class="result hidden"></div>
+    <button id="retry-btn" class="hidden">Tentar Novamente</button>
+
     <footer>Feira Científica | Ensino Médio & Fundamental II</footer>
   </div>
 
@@ -200,70 +218,4 @@
         answer: 2,
       },
       {
-        question: "10. Qual foi a principal contribuição de Pierre de Maricourt para a ciência?",
-        options: [
-          "Criar o primeiro telescópio",
-          "Desenvolver o cálculo diferencial",
-          "Unir observação e raciocínio lógico, antecipando o método científico",
-          "Fundar uma escola de navegação",
-        ],
-        answer: 2,
-      },
-    ];
-
-    const questionElement = document.getElementById("question");
-    const optionsContainer = document.getElementById("options");
-    const nextButton = document.getElementById("next-btn");
-    const resultContainer = document.getElementById("result");
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    function showQuestion() {
-      const q = questions[currentQuestion];
-      questionElement.textContent = q.question;
-      optionsContainer.innerHTML = "";
-      q.options.forEach((option, index) => {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.classList.add("option");
-        button.addEventListener("click", () => selectOption(index));
-        optionsContainer.appendChild(button);
-      });
-    }
-
-    function selectOption(selectedIndex) {
-      const q = questions[currentQuestion];
-      const buttons = document.querySelectorAll(".option");
-
-      buttons.forEach((btn, index) => {
-        btn.disabled = true;
-        if (index === q.answer) btn.style.backgroundColor = "var(--chamoisee)";
-        if (index === selectedIndex && index !== q.answer)
-          btn.style.backgroundColor = "#d9534f";
-      });
-
-      if (selectedIndex === q.answer) score++;
-      nextButton.classList.remove("hidden");
-    }
-
-    nextButton.addEventListener("click", () => {
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
-        showQuestion();
-        nextButton.classList.add("hidden");
-      } else {
-        showResult();
-      }
-    });
-
-    function showResult() {
-      document.getElementById("quiz").classList.add("hidden");
-      resultContainer.classList.remove("hidden");
-      resultContainer.textContent = `Você acertou ${score} de ${questions.length} perguntas!`;
-    }
-
-    showQuestion();
-  </script>
-</body>
-</html>
+        questi
