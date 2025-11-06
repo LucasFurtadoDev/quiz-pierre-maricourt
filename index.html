@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiz: Pierre de Maricourt e o Magnetismo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: Pierre de Maricourt</title>
   <style>
     :root {
       --almond: #ede0d4ff;
@@ -14,208 +14,121 @@
       --raw-umber: #9c6644ff;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
+      font-family: 'Segoe UI', sans-serif;
       background-color: var(--almond);
       color: var(--coffee);
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      height: 100vh;
     }
 
-    .quiz-container {
+    .container {
       background-color: var(--dun);
-      border-radius: 16px;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      width: 100%;
-      max-width: 700px;
-      padding: 30px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
       text-align: center;
     }
 
     h1 {
-      margin-bottom: 25px;
       color: var(--raw-umber);
-      font-size: 1.8rem;
-    }
-
-    .question {
-      font-weight: 600;
-      margin-bottom: 15px;
-      font-size: 1.2rem;
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin-bottom: 1rem;
     }
 
     button {
+      background-color: var(--chamoisee);
+      color: #fff;
       border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      margin-top: 1rem;
       cursor: pointer;
       font-size: 1rem;
-      border-radius: 8px;
-      padding: 10px 20px;
-      transition: all 0.2s ease-in-out;
+      transition: background 0.3s;
     }
 
-    button.option {
-      background-color: var(--tan);
-      border: 2px solid var(--chamoisee);
-    }
-
-    button.option:hover {
-      background-color: var(--chamoisee);
-      color: white;
-    }
-
-    #next-btn, #start-btn, #retry-btn {
+    button:hover {
       background-color: var(--coffee);
-      color: white;
-      margin-top: 20px;
     }
 
-    #next-btn:hover, #start-btn:hover, #retry-btn:hover {
-      background-color: var(--raw-umber);
+    .question {
+      margin-bottom: 1rem;
     }
 
-    .hidden {
-      display: none;
+    .option {
+      display: block;
+      background-color: var(--tan);
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem;
+      margin: 0.4rem 0;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    .result {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--coffee);
-      margin-top: 20px;
+    .option:hover {
+      background-color: var(--chamoisee);
+      color: #fff;
     }
 
-    footer {
-      margin-top: 25px;
-      font-size: 0.9rem;
-      color: var(--chamoisee);
+    .correct {
+      background-color: #4CAF50 !important;
+      color: #fff;
     }
 
-    .intro {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
+    .incorrect {
+      background-color: #e63946 !important;
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h1>Quiz: Pierre de Maricourt e o Magnetismo</h1>
-
-    <!-- Tela inicial -->
+  <div class="container">
     <div id="start-screen">
-      <p class="intro">
-        Descubra o quanto você sabe sobre Pierre de Maricourt, o pioneiro do estudo do magnetismo!  
-        Clique abaixo para começar o quiz.
-      </p>
-      <button id="start-btn">Começar o Quiz</button>
+      <h1>Quiz sobre Pierre de Maricourt</h1>
+      <p>Teste seus conhecimentos sobre o cientista medieval e suas descobertas!</p>
+      <button id="start-btn">Começar o quiz</button>
     </div>
 
-    <!-- Quiz -->
-    <div id="quiz" class="hidden">
-      <div id="question-container">
-        <div id="question" class="question"></div>
-        <div id="options" class="options"></div>
-      </div>
-      <button id="next-btn" class="hidden">Próxima</button>
+    <div id="quiz-screen" style="display:none;">
+      <h1 id="question"></h1>
+      <div id="options"></div>
     </div>
 
-    <!-- Resultado -->
-    <div id="result" class="result hidden"></div>
-    <button id="retry-btn" class="hidden">Tentar Novamente</button>
-
-    <footer>Feira Científica | Ensino Médio & Fundamental II</footer>
+    <div id="result-screen" style="display:none;">
+      <h1>Resultado</h1>
+      <p id="score"></p>
+      <button id="restart-btn">Tentar novamente</button>
+    </div>
   </div>
 
   <script>
-    const questions = [
+    const startBtn = document.getElementById("start-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const startScreen = document.getElementById("start-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-screen");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const scoreEl = document.getElementById("score");
+
+    const quiz = [
       {
-        question: "1. Em que período histórico viveu Pierre de Maricourt?",
-        options: ["Renascimento", "Idade Média", "Revolução Científica", "Antiguidade"],
-        answer: 1,
+        question: "Em que século viveu Pierre de Maricourt?",
+        options: ["Século XIII", "Século XV", "Século XVII", "Século XIX"],
+        answer: 0
       },
       {
-        question: "2. Qual era a principal influência sobre a ciência no século XIII?",
-        options: [
-          "A experimentação prática e o método empírico",
-          "A religião e a filosofia aristotélica",
-          "A matemática grega e a lógica moderna",
-          "A teoria heliocêntrica",
-        ],
-        answer: 1,
+        question: "Qual era o apelido de Pierre de Maricourt?",
+        options: ["Magnetikus", "Peregrinus", "Navigator", "Astrolabius"],
+        answer: 1
       },
       {
-        question: "3. Por que Pierre de Maricourt recebeu o apelido de 'Peregrinus'?",
-        options: [
-          "Porque era um estudioso de pássaros migratórios",
-          "Porque viajava muito e tinha experiências militares",
-          "Porque nasceu perto de uma peregrinação famosa",
-          "Porque era membro de uma ordem religiosa",
-        ],
-        answer: 1,
-      },
-      {
-        question: "4. Em qual evento histórico Pierre participou como engenheiro militar?",
-        options: [
-          "As Cruzadas do Oriente Médio",
-          "O cerco de Lucera, no sul da Itália",
-          "A construção da Muralha da França",
-          "A Guerra dos Cem Anos",
-        ],
-        answer: 1,
-      },
-      {
-        question: "5. Qual é o nome da principal obra de Pierre de Maricourt?",
-        options: [
-          "De Magnete",
-          "Epistola de Magnete",
-          "Tractatus de Scientia Nova",
-          "Liber Magnetis",
-        ],
-        answer: 1,
-      },
-      {
-        question: "6. A Epistola de Magnete foi escrita em forma de:",
-        options: ["Diário pessoal", "Carta para outro estudioso", "Poema filosófico", "Manual militar"],
-        answer: 1,
-      },
-      {
-        question: "7. O que Pierre de Maricourt descobriu sobre os ímãs?",
-        options: [
-          "Que eles podiam curar doenças",
-          "Que possuem dois polos com forças distintas",
-          "Que perdem a força magnética em água salgada",
-          "Que atraem apenas metais preciosos",
-        ],
-        answer: 1,
-      },
-      {
-        question: "8. Qual era o erro na visão de mundo de Peregrinus sobre o magnetismo?",
-        options: [
-          "Acreditava que o magnetismo era causado por magia",
-          "Pensava que o campo magnético vinha de forças celestes",
-          "Negava a existência dos polos magnéticos",
-          "Dizia que a Terra era o centro do magnetismo",
-        ],
-        answer: 1,
-      },
-      {
-        question: "9. Qual cientista foi diretamente influenciado pela obra de Pierre de Maricourt?",
-        options: ["Isaac Newton", "Galileu Galilei", "William Gilbert", "Nicolau Copérnico"],
-        answer: 2,
-      },
-      {
-        questi
+        question: "Onde Pierre de Maricourt serviu em 1269?",
+        options: ["Cerco de Lucera", "Batalha de Orleans", "Cerco de Paris", "Guerra de Milão"],
